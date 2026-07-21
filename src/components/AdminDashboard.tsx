@@ -327,7 +327,7 @@ export default function AdminDashboard({ stats, onRefresh, whatsappNumber, onUpd
                   required
                   value={editingNumber}
                   onChange={(e) => setEditingNumber(e.target.value)}
-                  placeholder="Ex: +221775551234"
+                  placeholder="Ex: +22900000000"
                   className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-[#0F2A4A]/10 bg-[#FAF8F5] text-xs text-[#2B2B2B] focus:border-[#0F2A4A] focus:outline-none transition-all"
                 />
               </div>
