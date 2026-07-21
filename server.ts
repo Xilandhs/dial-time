@@ -3,7 +3,6 @@ dotenv.config();
 console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
 import express from "express";
 import path from "path";
-import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import { createClient } from "@supabase/supabase-js";
 import { Produit, Commande, LigneCommande, Statistics } from "./src/types.js";
@@ -11,8 +10,6 @@ import { Produit, Commande, LigneCommande, Statistics } from "./src/types.js";
 const app = express();
 const PORT = 3000;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // --- SUPABASE CLIENT ---
 const supabase = createClient(
