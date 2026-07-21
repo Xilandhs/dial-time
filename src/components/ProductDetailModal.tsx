@@ -40,15 +40,15 @@ export default function ProductDetailModal({ product, onClose, onAddToCart }: Pr
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10">
+    <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center overflow-y-auto p-4 sm:p-6 md:p-10">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-[#0F2A4A]/60 backdrop-blur-sm transition-opacity duration-300"
+        className="fixed inset-0 bg-[#0F2A4A]/60 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       />
 
       {/* Modal Card */}
-      <div className="relative w-full max-w-4xl bg-[#FAF8F5] rounded-3xl overflow-hidden shadow-2xl border border-[#0F2A4A]/10 z-10 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-4xl my-auto bg-[#FAF8F5] rounded-3xl overflow-hidden shadow-2xl border border-[#0F2A4A]/10 z-10 animate-in fade-in zoom-in-95 duration-200">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -75,7 +75,7 @@ export default function ProductDetailModal({ product, onClose, onAddToCart }: Pr
           </div>
 
           {/* Right: Product Details */}
-          <div className="p-6 sm:p-8 md:p-10 flex flex-col justify-between max-h-[85vh] md:max-h-none overflow-y-auto">
+          <div className="p-6 sm:p-8 md:p-10 flex flex-col justify-between md:max-h-[85vh] md:overflow-y-auto">
             <div>
               {/* Slogan / Accent Tag */}
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C5A059] mb-2 block">
