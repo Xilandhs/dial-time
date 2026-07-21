@@ -10,7 +10,6 @@ import { Produit, Commande, LigneCommande, Statistics } from "./src/types.js";
 const app = express();
 const PORT = 3000;
 
-
 // --- SUPABASE CLIENT ---
 const supabase = createClient(
   process.env.SUPABASE_URL as string,
@@ -264,7 +263,43 @@ app.put("/api/orders/:code/status", async (req, res) => {
   res.json(data);
 });
 
-// 3. STATISTICS/ANALYTICS API
+// 3. SETTINGS API (numéro WhatsApp du vendeur, etc.)
+const SETTINGS_ROW_ID = "main";
+const DEFAULT_WHATSAPP = "+221775551234";
+
+app.get("/api/settings", async (req, res) => {
+  const { data, error } = await supabase
+    .from("settings")
+    .select("*")
+    .eq("id", SETTINGS_ROW_ID)
+    .single();
+
+  if (error || !data) {
+    // Aucune ligne encore enregistrée : renvoyer les valeurs par défaut
+    return res.json({ id: SETTINGS_ROW_ID, whatsapp_number: DEFAULT_WHATSAPP });
+  }
+
+  res.json(data);
+});
+
+app.put("/api/settings", async (req, res) => {
+  const { whatsapp_number } = req.body;
+
+  if (!whatsapp_number || typeof whatsapp_number !== "string") {
+    return res.status(400).json({ error: "Numéro WhatsApp invalide." });
+  }
+
+  const { data, error } = await supabase
+    .from("settings")
+    .upsert({ id: SETTINGS_ROW_ID, whatsapp_number })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
+// 4. STATISTICS/ANALYTICS API
 app.get("/api/stats", async (req, res) => {
   await expireOldOrders();
 

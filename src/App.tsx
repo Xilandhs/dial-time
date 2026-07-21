@@ -32,9 +32,7 @@ export default function App() {
   // Admin Data
   const [orders, setOrders] = useState<Commande[]>([]);
   const [stats, setStats] = useState<Statistics | null>(null);
-  const [whatsappNumber, setWhatsappNumber] = useState<string>(() => {
-    return localStorage.getItem("dial_time_whatsapp") || "+221775551234";
-  });
+  const [whatsappNumber, setWhatsappNumber] = useState<string>("+221775551234");
 
   // Load cart from Local Storage on mount
   useEffect(() => {
@@ -91,11 +89,26 @@ export default function App() {
     }
   };
 
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch("/api/settings");
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.whatsapp_number) {
+          setWhatsappNumber(data.whatsapp_number);
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching settings:", e);
+    }
+  };
+
   // Initial loads and background polling/reloads
   useEffect(() => {
     fetchProducts();
     fetchOrders();
     fetchStats();
+    fetchSettings();
   }, []);
 
   // Reload admin data when switching to Espace Manager and poll for updates automatically every 15s
@@ -213,9 +226,20 @@ export default function App() {
   };
 
   // Update seller WhatsApp
-  const handleUpdateWhatsapp = (num: string) => {
-    setWhatsappNumber(num);
-    localStorage.setItem("dial_time_whatsapp", num);
+  const handleUpdateWhatsapp = async (num: string) => {
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ whatsapp_number: num })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setWhatsappNumber(data.whatsapp_number);
+      }
+    } catch (e) {
+      console.error("Error updating settings:", e);
+    }
   };
 
   // Reset demo orders to clear simulated data and have 100% concrete metrics
