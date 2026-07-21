@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand-navy: #0F2A4A;
+  --color-brand-beige: #EFE9E1;
+  --color-brand-ivory: #FAF8F5;
+  --color-brand-charcoal: #2B2B2B;
+  --color-brand-gold: #C5A059;
+}
+
+/* Custom fade effects and utility styles */
+@layer utilities {
+  .serif-title {
+    font-family: var(--font-serif);
+    letter-spacing: -0.025em;
+  }
+  .display-title {
+    font-family: var(--font-serif);
+    letter-spacing: -0.05em;
+    line-height: 0.85;
+  }
+}

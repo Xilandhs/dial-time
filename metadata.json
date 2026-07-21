@@ -1,0 +1,6 @@
+{
+  "name": "Dial Time",
+  "description": "Plateforme de dropshipping de montres d'exception avec espace de vente public et espace d'administration de commandes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

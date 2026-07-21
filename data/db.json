@@ -1,0 +1,85 @@
+{
+  "products": [
+    {
+      "id": "prod_1",
+      "nom": "L'Impérial Automatique",
+      "description": "Une pièce horlogère d'exception dotée d'un mouvement mécanique à remontage automatique visible à travers son cadran squelette. Verre saphir inrayable, aiguilles polies au diamant et boîtier en acier inoxydable doré de 41 mm.",
+      "prix": 245000,
+      "actif": true,
+      "phare": true,
+      "couleurs": [
+        {
+          "id": "c1_1",
+          "nom_couleur": "Or Royal & Cuir Noir",
+          "photo": "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=800&q=80"
+        },
+        {
+          "id": "c1_2",
+          "nom_couleur": "Or Rose & Cuir Brun",
+          "photo": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "prod_2",
+      "nom": "Le Chronographe Aviateur",
+      "description": "Inspiré de l'âge d'or de l'aviation. Ce chronographe offre une précision absolue avec ses trois sous-cadrans, une lunette tachymétrique tournante et un bracelet en acier brossé ultra-résistant.",
+      "prix": 185000,
+      "actif": true,
+      "phare": true,
+      "couleurs": [
+        {
+          "id": "c2_1",
+          "nom_couleur": "Argent Brossé & Cadran Noir",
+          "photo": "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&q=80"
+        },
+        {
+          "id": "c2_2",
+          "nom_couleur": "Noir Mat & Cadran Carbone",
+          "photo": "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "prod_3",
+      "nom": "La Plongeuse Océane",
+      "description": "Taillée pour l'aventure maritime. Étanche à 200 mètres, dotée d'un cadran d'une lisibilité parfaite dans l'obscurité et d'une lunette rotative unidirectionnelle en céramique brillante.",
+      "prix": 165000,
+      "actif": true,
+      "phare": true,
+      "couleurs": [
+        {
+          "id": "c3_1",
+          "nom_couleur": "Bleu Abysse & Acier",
+          "photo": "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=800&q=80"
+        },
+        {
+          "id": "c3_2",
+          "nom_couleur": "Vert Émeraude & Acier",
+          "photo": "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=800&q=80"
+        }
+      ]
+    },
+    {
+      "id": "prod_4",
+      "nom": "La Classique Minimaliste",
+      "description": "L'élégance du minimalisme absolu. Un cadran ultra-fin de 7 mm d'épaisseur sans fioritures, associé à un bracelet en maille milanaise ou cuir épuré pour un style intemporel au quotidien.",
+      "prix": 125000,
+      "actif": true,
+      "phare": true,
+      "couleurs": [
+        {
+          "id": "c4_1",
+          "nom_couleur": "Blanc Pur & Maille Argent",
+          "photo": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
+        },
+        {
+          "id": "c4_2",
+          "nom_couleur": "Or Solaire & Cuir Fauve",
+          "photo": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=800&q=80"
+        }
+      ]
+    }
+  ],
+  "orders": []
+}
