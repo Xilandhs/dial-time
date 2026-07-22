@@ -32,7 +32,9 @@ export default function App() {
   // Admin Data
   const [orders, setOrders] = useState<Commande[]>([]);
   const [stats, setStats] = useState<Statistics | null>(null);
-  const [whatsappNumber, setWhatsappNumber] = useState<string>("+221775551234");
+  const [whatsappNumber, setWhatsappNumber] = useState<string>(() => {
+    return localStorage.getItem("dial_time_whatsapp") || "+221775551234";
+  });
 
   // Load cart from Local Storage on mount
   useEffect(() => {
@@ -89,42 +91,65 @@ export default function App() {
     }
   };
 
-  const fetchSettings = async () => {
-    try {
-      const res = await fetch("/api/settings");
-      if (res.ok) {
-        const data = await res.json();
-        if (data?.whatsapp_number) {
-          setWhatsappNumber(data.whatsapp_number);
-        }
-      }
-    } catch (e) {
-      console.error("Error fetching settings:", e);
-    }
-  };
-
   // Initial loads and background polling/reloads
   useEffect(() => {
     fetchProducts();
     fetchOrders();
     fetchStats();
-    fetchSettings();
   }, []);
 
-  // Reload admin data when switching to Espace Manager and poll for updates automatically every 15s
+  // Deep-linking: open a product's modal directly via ?produit=ID in the URL
+  // (used for ads/social bio links so a click lands straight on the product card)
+  const openProductModal = (product: Produit) => {
+    setSelectedProduct(product);
+    const url = new URL(window.location.href);
+    url.searchParams.set("produit", product.id);
+    window.history.pushState({}, "", url.toString());
+  };
+
+  const closeProductModal = () => {
+    setSelectedProduct(null);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("produit");
+    window.history.pushState({}, "", url.toString());
+  };
+
+  // On first load (or once products arrive), check the URL for a ?produit=ID
+  // param and auto-open the matching product's detail modal.
+  useEffect(() => {
+    if (products.length === 0) return;
+    const params = new URLSearchParams(window.location.search);
+    const produitId = params.get("produit");
+    if (produitId) {
+      const found = products.find((p) => p.id === produitId);
+      if (found) {
+        setSelectedProduct(found);
+      }
+    }
+  }, [products]);
+
+  // Support browser back/forward navigation closing the modal correctly
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const produitId = params.get("produit");
+      if (!produitId) {
+        setSelectedProduct(null);
+      } else {
+        const found = products.find((p) => p.id === produitId);
+        setSelectedProduct(found || null);
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [products]);
+
+  // Reload admin data when switching to Espace Manager
   useEffect(() => {
     if (isAdmin) {
       fetchOrders();
       fetchStats();
       fetchProducts();
-
-      const interval = setInterval(() => {
-        fetchOrders();
-        fetchStats();
-        fetchProducts();
-      }, 15000);
-
-      return () => clearInterval(interval);
     }
   }, [isAdmin]);
 
@@ -226,33 +251,9 @@ export default function App() {
   };
 
   // Update seller WhatsApp
-  const handleUpdateWhatsapp = async (num: string) => {
-    try {
-      const res = await fetch("/api/settings", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ whatsapp_number: num })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setWhatsappNumber(data.whatsapp_number);
-      }
-    } catch (e) {
-      console.error("Error updating settings:", e);
-    }
-  };
-
-  // Reset demo orders to clear simulated data and have 100% concrete metrics
-  const handleResetDemo = async () => {
-    try {
-      const res = await fetch("/api/reset-demo", { method: "POST" });
-      if (res.ok) {
-        fetchOrders();
-        fetchStats();
-      }
-    } catch (e) {
-      console.error("Error resetting demo data:", e);
-    }
+  const handleUpdateWhatsapp = (num: string) => {
+    setWhatsappNumber(num);
+    localStorage.setItem("dial_time_whatsapp", num);
   };
 
   // Admin access protection handlers
@@ -272,7 +273,8 @@ export default function App() {
   const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const normalized = passwordInput.trim().toLowerCase();
-    if (normalized === "130865" || normalized === "admin" || normalized === "manager") {
+    // Default demo password is "1234", but also support common "admin" or "manager" strings
+    if (normalized === "1234" || normalized === "admin" || normalized === "manager") {
       setIsAdmin(true);
       setIsAuthModalOpen(false);
       setAuthError(null);
@@ -348,7 +350,6 @@ export default function App() {
                 onRefresh={fetchStats}
                 whatsappNumber={whatsappNumber}
                 onUpdateWhatsapp={handleUpdateWhatsapp}
-                onResetDemo={handleResetDemo}
               />
             )}
 
@@ -401,7 +402,7 @@ export default function App() {
                     <ProductCard
                       key={product.id}
                       product={product}
-                      onSelect={(p) => setSelectedProduct(p)}
+                      onSelect={(p) => openProductModal(p)}
                     />
                   ))}
                 </div>
@@ -419,7 +420,7 @@ export default function App() {
                 </p>
                 <div className="pt-2">
                   <span className="text-[11px] uppercase tracking-widest text-[#FAF8F5]/60 font-medium">
-                    Dial Time  -Cadran d'exception
+                    Dial Time — Cadran d'exception
                   </span>
                 </div>
               </div>
@@ -464,7 +465,7 @@ export default function App() {
                     Règlement Flexible
                   </h4>
                   <p className="text-xs text-[#2B2B2B]/75 leading-relaxed">
-                    Réglez hors ligne par Mobile Money (MTN , Flooz, Wa), virement bancaire ou cash à la livraison.
+                    Réglez hors ligne par Mobile Money (Orange Money, Wave), virement bancaire ou cash à la livraison.
                   </p>
                 </div>
 
@@ -488,7 +489,7 @@ export default function App() {
       {/* Product Detail Overlay Modal */}
       <ProductDetailModal
         product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
+        onClose={closeProductModal}
         onAddToCart={handleAddToCart}
       />
 
@@ -519,7 +520,7 @@ export default function App() {
 
             {/* Typography Title & Subtitle */}
             <h3 className="serif-title font-serif text-xl font-bold text-[#0F2A4A] mb-1">
-              Accès Sécurisé  -Espace Manager
+              Accès Sécurisé — Espace Manager
             </h3>
             <p className="text-xs text-[#2B2B2B]/70 leading-relaxed mb-6">
               Afin de protéger vos commandes, stocks et statistiques, l'accès à cet espace est réservé à la direction.
@@ -562,6 +563,11 @@ export default function App() {
                 </p>
               )}
 
+              {/* Helper Demo Info */}
+              <div className="bg-[#EFE9E1]/45 border border-[#0F2A4A]/5 p-3.5 rounded-xl text-[10px] text-[#2B2B2B]/80 leading-relaxed">
+                💡 <strong>Démonstration :</strong> Utilisez le code d'accès <strong className="text-[#C5A059] font-mono select-all">1234</strong> pour déverrouiller et tester la console d'administration.
+              </div>
+
               {/* Action Buttons */}
               <div className="flex gap-3 pt-2">
                 <button
@@ -593,7 +599,7 @@ export default function App() {
             © {new Date().getFullYear()} Dial Time. Tous droits réservés. Cadran d'exception.
           </p>
           <p className="text-[9px] text-[#2B2B2B]/40 font-serif">
-            Plateforme de dropshipping de confiance  -Devise : Franc CFA (FCFA) uniquement.
+            Plateforme de dropshipping de confiance — Devise : Franc CFA (FCFA) uniquement.
           </p>
         </div>
       </footer>

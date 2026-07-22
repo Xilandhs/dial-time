@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Produit, CouleurProduit } from "../types";
 import { formatFCFA } from "./ProductCard";
-import { Plus, Edit2, Trash2, Check, X, Image as ImageIcon, Eye, EyeOff, Star, AlertTriangle } from "lucide-react";
+import { Plus, Edit2, Trash2, Check, X, Image as ImageIcon, Eye, EyeOff, Star, AlertTriangle, Link2 } from "lucide-react";
 
 interface AdminProductsProps {
   products: Produit[];
@@ -18,6 +18,19 @@ export default function AdminProducts({
 }: AdminProductsProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Produit | null>(null);
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+
+  const handleCopyProductLink = async (productId: string) => {
+    const url = new URL(window.location.origin);
+    url.searchParams.set("produit", productId);
+    try {
+      await navigator.clipboard.writeText(url.toString());
+      setCopiedLinkId(productId);
+      setTimeout(() => setCopiedLinkId(null), 2000);
+    } catch (e) {
+      console.error("Impossible de copier le lien:", e);
+    }
+  };
 
   // Form Fields
   const [nom, setNom] = useState("");
@@ -423,6 +436,25 @@ export default function AdminProducts({
                   </div>
 
                   <div className="flex space-x-2">
+                    {/* Copy shareable product link (for ads / social bio links) */}
+                    <button
+                      onClick={() => handleCopyProductLink(p.id)}
+                      className="p-2 rounded-xl border border-[#0F2A4A]/10 text-[#0F2A4A] hover:border-[#0F2A4A]/30 bg-white transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+                      title="Copier le lien direct du produit"
+                    >
+                      {copiedLinkId === p.id ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          <span>Copié</span>
+                        </>
+                      ) : (
+                        <>
+                          <Link2 className="w-4 h-4" />
+                          <span>Lien</span>
+                        </>
+                      )}
+                    </button>
+
                     {/* Open Edit Form */}
                     <button
                       onClick={() => handleOpenEdit(p)}
