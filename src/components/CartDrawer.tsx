@@ -290,7 +290,7 @@ export default function CartDrawer({
                             required
                             value={nom}
                             onChange={(e) => setNom(e.target.value)}
-                            placeholder="Mamadou DIOP"
+                            placeholder="Mamadou Diop"
                             className="w-full px-4 py-3 rounded-xl border border-[#0F2A4A]/10 bg-white text-xs text-[#2B2B2B] focus:border-[#0F2A4A] focus:outline-none focus:ring-1 focus:ring-[#0F2A4A]/20 transition-all"
                           />
                         </div>
@@ -304,7 +304,7 @@ export default function CartDrawer({
                             required
                             value={telephone}
                             onChange={(e) => setTelephone(e.target.value)}
-                            placeholder="Ex: +229 00 00 00 00"
+                            placeholder="Ex: +221 77 555 1234"
                             className="w-full px-4 py-3 rounded-xl border border-[#0F2A4A]/10 bg-white text-xs text-[#2B2B2B] focus:border-[#0F2A4A] focus:outline-none focus:ring-1 focus:ring-[#0F2A4A]/20 transition-all"
                           />
                         </div>
@@ -318,7 +318,7 @@ export default function CartDrawer({
                             required
                             value={adresse}
                             onChange={(e) => setAdresse(e.target.value)}
-                            placeholder="Ex: Ville, Quartier, Rue 12 x 15"
+                            placeholder="Ex: Dakar, Plateau, Rue 12 x 15"
                             className="w-full px-4 py-3 rounded-xl border border-[#0F2A4A]/10 bg-white text-xs text-[#2B2B2B] focus:border-[#0F2A4A] focus:outline-none focus:ring-1 focus:ring-[#0F2A4A]/20 transition-all"
                           />
                         </div>
@@ -341,10 +341,6 @@ export default function CartDrawer({
                           <div className="flex justify-between text-xs text-[#2B2B2B]/70">
                             <span>Sous-total articles</span>
                             <span>{formatFCFA(total)}</span>
-                          </div>
-                          <div className="flex justify-between text-xs text-[#2B2B2B]/70">
-                            <span>Frais de livraison</span>
-                            <span className="text-[#C5A059] font-semibold">Gratuit</span>
                           </div>
                           <div className="flex justify-between font-serif text-sm font-semibold text-[#0F2A4A] pt-2 border-t border-[#0F2A4A]/10">
                             <span>Montant Total</span>
