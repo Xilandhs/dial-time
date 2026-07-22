@@ -33,7 +33,7 @@ export default function App() {
   const [orders, setOrders] = useState<Commande[]>([]);
   const [stats, setStats] = useState<Statistics | null>(null);
   const [whatsappNumber, setWhatsappNumber] = useState<string>(() => {
-    return localStorage.getItem("dial_time_whatsapp") || "+221775551234";
+    return localStorage.getItem("dial_time_whatsapp") || "+2290142085199";
   });
 
   // Load cart from Local Storage on mount
@@ -273,8 +273,7 @@ export default function App() {
   const handleAuthSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const normalized = passwordInput.trim().toLowerCase();
-    // Default demo password is "1234", but also support common "admin" or "manager" strings
-    if (normalized === "1234" || normalized === "admin" || normalized === "manager") {
+    if (normalized === "130865" || normalized === "admin" || normalized === "manager") {
       setIsAdmin(true);
       setIsAuthModalOpen(false);
       setAuthError(null);
@@ -562,11 +561,6 @@ export default function App() {
                   {authError}
                 </p>
               )}
-
-              {/* Helper Demo Info */}
-              <div className="bg-[#EFE9E1]/45 border border-[#0F2A4A]/5 p-3.5 rounded-xl text-[10px] text-[#2B2B2B]/80 leading-relaxed">
-                💡 <strong>Démonstration :</strong> Utilisez le code d'accès <strong className="text-[#C5A059] font-mono select-all">1234</strong> pour déverrouiller et tester la console d'administration.
-              </div>
 
               {/* Action Buttons */}
               <div className="flex gap-3 pt-2">

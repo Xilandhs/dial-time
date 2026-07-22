@@ -304,7 +304,7 @@ export default function CartDrawer({
                             required
                             value={telephone}
                             onChange={(e) => setTelephone(e.target.value)}
-                            placeholder="Ex: +221 77 555 1234"
+                            placeholder="Ex: +221 77 555 123"
                             className="w-full px-4 py-3 rounded-xl border border-[#0F2A4A]/10 bg-white text-xs text-[#2B2B2B] focus:border-[#0F2A4A] focus:outline-none focus:ring-1 focus:ring-[#0F2A4A]/20 transition-all"
                           />
                         </div>
