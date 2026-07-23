@@ -265,7 +265,7 @@ app.put("/api/orders/:code/status", async (req, res) => {
 
 // 3. SETTINGS API (numéro WhatsApp du vendeur, etc.)
 const SETTINGS_ROW_ID = "main";
-const DEFAULT_WHATSAPP = "+221775551234";
+const DEFAULT_WHATSAPP = "+2290159873985";
 
 app.get("/api/settings", async (req, res) => {
   const { data, error } = await supabase
